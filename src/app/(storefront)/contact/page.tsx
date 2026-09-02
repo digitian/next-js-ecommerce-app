@@ -20,8 +20,8 @@ import {
 import PageHeaderComponent from "@/src/components/common/page-header";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Storefront",
-  description: "Get in touch with us for any questions about our products or your order.",
+  title: `Contact Us | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Contact us for any questions about our products or your order.`,
 };
 
 export default function ContactPage() {

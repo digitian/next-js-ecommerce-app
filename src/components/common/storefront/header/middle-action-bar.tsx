@@ -1,10 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+
 import { SearchBar } from "./search-bar";
 import { CartTrigger } from "@/src/components/features/storefront/cart-trigger";
-import { Heart, User } from "lucide-react";
+import { ProfileDropdown } from "@/src/components/features/auth/profile-dropdown";
 import { Button } from "@/src/components/ui/button";
-import { MobileNavSheet } from "./mobile-nav-sheet"; // We will create this next
-import Image from "next/image";
+import { MobileNavSheet } from "./mobile-nav-sheet";
 
 export function MiddleActionBar() {
   return (
@@ -41,10 +43,7 @@ export function MiddleActionBar() {
             <SearchBar />
           </div>
           
-          <Button variant="ghost" size="icon" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
-            <User className="size-5" />
-            <span className="sr-only">Account</span>
-          </Button>
+          <ProfileDropdown />
           
           <Button variant="ghost" size="icon" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
             <Heart className="size-5" />

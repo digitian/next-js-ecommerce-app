@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Returns & Exchanges | Storefront",
-  description: "Learn about our return and exchange policies.",
+  title: `Returns & Exchanges | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Learn about our return and exchange policies for ${process.env.NEXT_PUBLIC_APP_NAME}.`,
 }
 
 export default function ReturnExchangesPage() {

@@ -122,7 +122,8 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
     return () => { isMounted = false; };
   }, [searchParams]);
 
-  const handleSortChange = async (value: string) => {
+  const handleSortChange = async (value: string | null) => {
+    if (!value) return;
     setSort(value);
     // Reset list and fetch first page
     setIsTransitioning(true);

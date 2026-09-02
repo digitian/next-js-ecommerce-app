@@ -23,7 +23,7 @@ import {
 import PageHeaderComponent from "@/src/components/common/page-header";
 
 export const metadata: Metadata = {
-  title: "About Us | Storefront",
+  title: `About Us | ${process.env.NEXT_PUBLIC_APP_NAME}`,
   description: "Learn more about our heritage, craftsmanship, and commitment to sustainable minimal design.",
 };
 

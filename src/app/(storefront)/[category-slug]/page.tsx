@@ -37,7 +37,7 @@ export async function generateMetadata({ params, searchParams }: CategoryPagePro
     }
 
     return {
-        title: `${title} | Storefront`,
+        title: `${title} | ${process.env.NEXT_PUBLIC_APP_NAME}`,
         description: `Browse our collection of ${title.toLowerCase()}`,
     };
 }

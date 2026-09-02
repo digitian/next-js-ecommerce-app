@@ -28,6 +28,24 @@ export function ProductInfo({ product }: ProductInfoProps) {
     }
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: product.brief_description || product.description,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.error("Error sharing:", err);
+      }
+    } else {
+      // Fallback for browsers that do not support Web Share API
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -125,7 +143,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Share button */}
       <div>
-        <Button variant="outline" size="lg"><Share2 data-icon="inline-start" />Share this product</Button>
+        <Button variant="outline" size="lg" onClick={handleShare}>
+          <Share2 data-icon="inline-start" />
+          Share this product
+        </Button>
       </div>
     </div>
   );

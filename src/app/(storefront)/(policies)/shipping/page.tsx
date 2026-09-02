@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Shipping Policy | Storefront",
-  description: "Learn about our shipping rates, delivery times, and international shipping options.",
+  title: `Shipping Policy | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Learn about our shipping rates, delivery times, and international shipping options for ${process.env.NEXT_PUBLIC_APP_NAME}.`,
 }
 
 export default function ShippingPolicyPage() {

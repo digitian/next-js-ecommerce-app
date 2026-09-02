@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Privacy Policy | Storefront",
-  description: "Learn how we collect, use, and protect your personal information.",
+  title: `Privacy Policy | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Learn how we collect, use, and protect your personal information for ${process.env.NEXT_PUBLIC_APP_NAME}.`,
 }
 
 export default function PrivacyPolicyPage() {

@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Terms of Service | Storefront",
-  description: "Read the terms and conditions that govern your use of our website.",
+  title: `Terms of Service | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Read the terms and conditions that govern your use of our website for ${process.env.NEXT_PUBLIC_APP_NAME}.`,
 }
 
 export default function TermsOfServicePage() {

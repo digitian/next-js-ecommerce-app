@@ -11,9 +11,15 @@ import {
   BreadcrumbSeparator,
 } from "@/src/components/ui/breadcrumb";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import type { Metadata } from "next";
 
 interface ProductsPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export const metadata: Metadata = {
+  title: `Products | ${process.env.NEXT_PUBLIC_APP_NAME}`,
+  description: `Browse our collection of ${process.env.NEXT_PUBLIC_APP_NAME}`,
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {

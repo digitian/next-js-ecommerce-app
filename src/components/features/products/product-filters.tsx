@@ -76,10 +76,13 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
     [searchParams]
   );
 
-  const handlePriceCommit = (value: number[]) => {
+  const handlePriceCommit = (value: number | readonly number[]) => {
+    const valArray = Array.isArray(value) ? [...value] : [value];
+    const min = valArray[0] ?? 0;
+    const max = valArray[1] ?? 100000;
     const params = new URLSearchParams(searchParams.toString());
-    params.set("minPrice", value[0].toString());
-    params.set("maxPrice", value[1].toString());
+    params.set("minPrice", min.toString());
+    params.set("maxPrice", max.toString());
     router.push(pathname + "?" + params.toString(), { scroll: false });
   };
 
@@ -144,7 +147,7 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
           max={100000}
           step={1000}
           value={priceRange}
-          onValueChange={setPriceRange}
+          onValueChange={(val) => setPriceRange(Array.isArray(val) ? [...val] : [val])}
           onValueCommitted={handlePriceCommit}
           className="mt-2"
         />
