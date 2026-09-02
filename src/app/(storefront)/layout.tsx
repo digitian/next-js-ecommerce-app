@@ -22,17 +22,23 @@ export const metadata: Metadata = {
 
 import { SiteHeader } from "@/src/components/common/storefront/header/site-header";
 import { SiteFooter } from "@/src/components/common/storefront/footer/site-footer";
+import { BottomNavigationBar } from "@/src/components/common/storefront/header/bottom-navigation-bar";
+import { Toaster } from "@/src/components/ui/sonner";
+import { getCategories } from "@/src/lib/api/products";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const categories = await getCategories();
+
   return (
     <html
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <SiteHeader />
+        <SiteHeader bottomNav={<BottomNavigationBar categories={categories} />} />
         <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <SiteFooter categories={categories} />
+        <Toaster position="top-right" />
       </body>
     </html>
   );

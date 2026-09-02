@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Mail, Phone, Music2 } from "lucide-react";
+import type { Category } from "@/src/types/product.types";
+
 
 function Facebook(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -40,7 +42,11 @@ function Dribbble(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function SiteFooter() {
+interface SiteFooterProps {
+  categories: Category[];
+}
+
+export function SiteFooter({ categories }: SiteFooterProps) {
   return (
     <footer className="border-t dark">
       <div className="bg-indigo-950 py-12 md:py-16">
@@ -89,10 +95,16 @@ export function SiteFooter() {
             <div className="flex flex-col gap-6">
               <h3 className="text-lg font-semibold text-white">Categories</h3>
               <ul className="flex flex-col gap-4 text-sm text-muted-foreground">
-                <li><Link href="/products?category=sofas" className="hover:text-primary transition-colors">Sofas & Sectionals</Link></li>
-                <li><Link href="/products?category=tables" className="hover:text-primary transition-colors">Coffee Tables</Link></li>
-                <li><Link href="/products?category=entertainment" className="hover:text-primary transition-colors">TV Stands</Link></li>
-                <li><Link href="/products?category=chairs" className="hover:text-primary transition-colors">Accent Chairs</Link></li>
+                {categories.map((category) => (
+                  <li key={category.id}>
+                    <Link
+                      href={`/products?category=${category.slug}`}
+                      className="hover:text-primary transition-colors"
+                    >
+                      {category.title}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -103,7 +115,7 @@ export function SiteFooter() {
                 <li><Link href="/about" className="hover:text-primary transition-colors">About us</Link></li>
                 <li><Link href="/contact" className="hover:text-primary transition-colors">Contact us</Link></li>
                 <li><Link href="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link></li>
-                <li><Link href="/returns" className="hover:text-primary transition-colors">Return & Exchanges</Link></li>
+                <li><Link href="/returns-exchanges" className="hover:text-primary transition-colors">Return & Exchanges</Link></li>
                 <li><Link href="/shipping" className="hover:text-primary transition-colors">Shipping & Delivery</Link></li>
                 <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
               </ul>

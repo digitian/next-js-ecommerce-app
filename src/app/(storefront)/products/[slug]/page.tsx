@@ -26,7 +26,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
     }
 
     const categorySlug = product.category.slug;
-    const categoryProducts = await getProducts({ category: categorySlug });
+    const { items: categoryProducts } = await getProducts({ category: categorySlug });
     const similarProducts = categoryProducts.filter(p => p.id !== product.id).slice(0, 10);
     
     const reviews = await getProductReviews(product.id);

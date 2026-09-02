@@ -3,6 +3,7 @@ export type Category = {
     slug: string;
     title: string;
     showcase_image: string;
+    thumb_image: string;
 }
 
 export type SubCategory = {
@@ -11,6 +12,7 @@ export type SubCategory = {
     title: string;
     category_id: string;
     showcase_image: string;
+    thumb_image: string;
 }
 
 export type ProductImage = {

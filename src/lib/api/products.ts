@@ -13,7 +13,10 @@ function hydrateProduct(p: MockProductEntity): Product {
 
 export async function getProducts(filters?: {
     category?: string | null;
-}): Promise<Product[]> {
+    sort?: string | null;
+    skip?: number;
+    take?: number;
+}): Promise<{ items: Product[]; hasNextPage: boolean }> {
     let result = products.map(hydrateProduct);
 
     if (filters?.category && filters.category !== "all") {
@@ -22,11 +25,38 @@ export async function getProducts(filters?: {
         });
     }
 
-    return result;
+    if (filters?.sort) {
+        switch (filters.sort) {
+            case 'price-asc':
+                result.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                result.sort((a, b) => b.price - a.price);
+                break;
+            case 'rating':
+                result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+                break;
+            case 'name':
+                result.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+        }
+    }
+
+    const skip = filters?.skip ?? 0;
+    const take = filters?.take ?? result.length;
+
+    const items = result.slice(skip, skip + take);
+    const hasNextPage = skip + take < result.length;
+
+    return { items, hasNextPage };
 }
 
 export async function getCategories(): Promise<Category[]> {
     return [...categories];
+}
+
+export async function getSubCategories(): Promise<SubCategory[]> {
+    return [...subcategories];
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {

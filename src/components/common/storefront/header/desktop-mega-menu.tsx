@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import type { Category, SubCategory } from "@/src/types/product.types";
 
 import { cn } from "@/src/lib/utils";
 import {
@@ -14,82 +16,58 @@ import {
   navigationMenuTriggerStyle,
 } from "@/src/components/ui/navigation-menu";
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Sofas & Sectionals",
-    href: "/products?category=sofas",
-    description: "Comfortable and stylish seating for your living room.",
-  },
-  {
-    title: "Coffee Tables",
-    href: "/products?category=tables",
-    description: "Centerpieces that bring your living space together.",
-  },
-  {
-    title: "TV Stands",
-    href: "/products?category=entertainment",
-    description: "Media storage and entertainment consoles.",
-  },
-  {
-    title: "Accent Chairs",
-    href: "/products?category=chairs",
-    description: "Add a pop of color and extra seating.",
-  },
-];
+interface DesktopMegaMenuProps {
+  categories?: Category[];
+  subcategories?: SubCategory[];
+}
 
-export function DesktopMegaMenu() {
+export function DesktopMegaMenu({ categories = [], subcategories = [] }: DesktopMegaMenuProps) {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent h-12 text-sm font-medium">Living Room</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent h-12 text-sm font-medium">Bedroom</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink render={<Link className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md" href="/products?category=bedroom" />}>
-                  <div className="mb-2 mt-4 text-lg font-medium">
-                    Sleep Collection
-                  </div>
-                  <p className="text-sm leading-tight text-muted-foreground">
-                    Everything you need for a restful night's sleep. Beds, mattresses, and bedding.
-                  </p>
-                </NavigationMenuLink>
-              </li>
-              <ListItem href="/products?category=beds" title="Beds & Frames">
-                Sturdy and stylish foundations.
-              </ListItem>
-              <ListItem href="/products?category=mattresses" title="Mattresses">
-                Memory foam, hybrid, and spring options.
-              </ListItem>
-              <ListItem href="/products?category=nightstands" title="Nightstands">
-                Bedside storage solutions.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        
-        <NavigationMenuItem>
-          <NavigationMenuLink render={<Link href="/products?category=new" className={cn(navigationMenuTriggerStyle(), "bg-transparent h-12 text-sm font-medium")} />}>
-            New Arrivals
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+        {categories.map((category) => {
+          const categorySubcategories = subcategories.filter(
+            (sub) => sub.category_id === category.id
+          );
+
+          return (
+            <NavigationMenuItem key={category.id}>
+              <NavigationMenuTrigger className="bg-transparent h-12 text-sm font-medium">
+                {category.title}
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  <li className="row-span-3 md:row-span-4 h-full min-h-[200px] relative">
+                     <NavigationMenuLink render={<Link className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md relative overflow-hidden group" href={`/products?category=${category.slug}`} />}>
+                            <div className="absolute inset-0 z-0">
+                                <Image src={category.thumb_image} alt={category.title} fill className="object-cover opacity-30 transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 300px" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                            </div>
+                            <div className="z-10 relative">
+                                <div className="mb-2 mt-4 text-lg font-medium">
+                                    {category.title}
+                                </div>
+                                <p className="text-sm leading-tight text-muted-foreground line-clamp-2">
+                                    Explore all products in our {category.title.toLowerCase()} collection.
+                                </p>
+                            </div>
+                     </NavigationMenuLink>
+                  </li>
+                  {categorySubcategories.map((sub) => (
+                    <ListItem
+                      key={sub.id}
+                      title={sub.title}
+                      href={`/products?category=${category.slug}&subcategory=${sub.slug}`}
+                      thumbImage={sub.thumb_image}
+                    >
+                      Shop {sub.title.toLowerCase()}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          );
+        })}
         
         <NavigationMenuItem>
           <NavigationMenuLink render={<Link href="/products?sale=true" className={cn(navigationMenuTriggerStyle(), "bg-transparent h-12 text-sm font-medium text-destructive focus:text-destructive hover:text-destructive")} />}>
@@ -103,15 +81,24 @@ export function DesktopMegaMenu() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<"a"> & { thumbImage?: string }
+>(({ className, title, children, thumbImage, ...props }, ref) => {
   return (
     <li>
-      <NavigationMenuLink render={<a ref={ref} className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", className)} {...props} />}>
-        <div className="text-sm font-medium leading-none">{title}</div>
-        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-          {children}
-        </p>
+      <NavigationMenuLink render={<Link href={props.href || ""} ref={ref as any} className={cn("block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", className)} {...props} />}>
+          <div className="flex items-center gap-3">
+             {thumbImage && (
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-md bg-muted">
+                   <Image src={thumbImage} alt={title || ""} fill className="object-cover" sizes="40px" />
+                </div>
+             )}
+             <div className="flex flex-col justify-center">
+                <div className="text-sm font-medium leading-none">{title}</div>
+                <p className="line-clamp-1 text-xs leading-snug text-muted-foreground mt-1">
+                  {children}
+                </p>
+             </div>
+          </div>
       </NavigationMenuLink>
     </li>
   );

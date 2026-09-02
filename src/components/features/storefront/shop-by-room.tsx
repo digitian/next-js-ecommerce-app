@@ -8,7 +8,7 @@ const rooms = [
     name: "Living Room",
     image: "/images/rooms/living-room.jpg",
     className: "md:col-span-2 md:row-span-2",
-    href: "/products?category=living-room",
+    href: "/living-room",
   },
   {
     id: "bedroom",

@@ -1,54 +1,75 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TopUtilityBar } from "./top-utility-bar";
 import { MiddleActionBar } from "./middle-action-bar";
-import { BottomNavigationBar } from "./bottom-navigation-bar";
-import { cn } from "@/src/lib/utils";
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  bottomNav: React.ReactNode;
+}
+
+export function SiteHeader({ bottomNav }: SiteHeaderProps) {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [bottomNavHeight, setBottomNavHeight] = useState(0);
+  const lastScrollY = useRef(0);
+  const bottomNavRef = useRef<HTMLDivElement>(null);
 
+  // Measure the bottom nav height so we know how far to slide the header up.
+  // Using ResizeObserver handles responsive changes (e.g. the bar is hidden on mobile).
+  useEffect(() => {
+    const el = bottomNavRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver(() => {
+      setBottomNavHeight(el.offsetHeight);
+    });
+
+    setBottomNavHeight(el.offsetHeight);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Single scroll listener, registered once.
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      // If we scroll down past 100px, we hide the nav tier. If we scroll up, we show it.
+
       if (currentScrollY > 100) {
-        if (currentScrollY > lastScrollY) {
-          setIsScrolledDown(true); // scrolling down
-        } else {
+        if (currentScrollY > lastScrollY.current) {
+          setIsScrolledDown(true);  // scrolling down
+        } else if (currentScrollY < lastScrollY.current) {
           setIsScrolledDown(false); // scrolling up
         }
       } else {
-        setIsScrolledDown(false); // Top of page
+        setIsScrolledDown(false); // back at top
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
+
+  // Slide the header up by the bottom nav height when scrolling down.
+  // Because we animate `top` instead of collapsing height, the header's space
+  // in the document flow never changes — content below never shifts, eliminating trembling.
+  const topOffset = isScrolledDown ? -bottomNavHeight : 0;
 
   return (
-    <header className="relative w-full z-50">
-      {/* Top Utility Bar - Not Sticky */}
+    <>
+      {/* Top Utility Bar — scrolls away naturally, not part of sticky header */}
       <TopUtilityBar />
-      
-      {/* Sticky Container for Middle and Bottom Bars */}
-      <div className="sticky top-0 w-full z-50 transition-transform duration-300 ease-in-out">
+
+      <header
+        className="sticky w-full z-50 shadow-sm transition-[top] duration-300 ease-in-out"
+        style={{ top: `${topOffset}px` }}
+      >
         <MiddleActionBar />
-        <div 
-          className={cn(
-            "w-full transition-all duration-300 ease-in-out transform origin-top",
-            isScrolledDown ? "h-0 opacity-0 -translate-y-full overflow-hidden" : "h-auto opacity-100 translate-y-0"
-          )}
-        >
-          <BottomNavigationBar />
+        <div ref={bottomNavRef}>
+          {bottomNav}
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

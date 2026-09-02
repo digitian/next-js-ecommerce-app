@@ -5,7 +5,7 @@ import { getProducts, getCategories } from "@/src/lib/api/products";
 import TrustBar from "@/src/components/features/storefront/trust-bar";
 
 export default async function Home() {
-  const products = await getProducts();
+  const { items: products } = await getProducts();
   const categories = await getCategories();
 
   return (

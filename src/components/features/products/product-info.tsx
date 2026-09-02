@@ -101,15 +101,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">SKU:</span>
-          <span>{product.id.toUpperCase()}-{product.category.id.split('_')[1]?.toUpperCase() || 'GEN'}</span>
+          <span>{product.id.toUpperCase()}-{product.category?.id?.split('_')[1]?.toUpperCase() || 'GEN'}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">Categories:</span>
-          <span>{product.category.title}, {product.sub_category.title}</span>
+          <span>{product.category?.title}, {product.sub_category?.title}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">Tags:</span>
-          <span className="lowercase">furniture, home, {product.sub_category.title}</span>
+          <span className="lowercase">furniture, home, {product.sub_category?.title}</span>
         </div>
       </div>
 

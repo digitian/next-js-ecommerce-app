@@ -46,7 +46,7 @@ export function FeaturedProducts({ initialProducts, categories }: FeaturedProduc
         const data = await res.json();
         
         if (data.success && isMounted) {
-          setProducts(data.data);
+          setProducts(data.data.items);
         }
       } catch (error) {
         console.error("Failed to fetch products:", error);
