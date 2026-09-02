@@ -93,15 +93,23 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       <Separator />
 
-      {/* Tiny general infos (Mocked as requested) */}
+      {/* Tiny general infos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">Availability:</span>
-          <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400">In Stock</Badge>
+          {product.availability === "in-stock" ? (
+            <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400">In Stock</Badge>
+          ) : product.availability === "out-of-stock" ? (
+            <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400">Out of Stock</Badge>
+          ) : product.availability === "pre-order" ? (
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400">Pre-order</Badge>
+          ) : (
+            <span>Unknown</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">SKU:</span>
-          <span>{product.id.toUpperCase()}-{product.category?.id?.split('_')[1]?.toUpperCase() || 'GEN'}</span>
+          <span>{product.sku || 'N/A'}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">Categories:</span>
@@ -109,7 +117,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground">Tags:</span>
-          <span className="lowercase">furniture, home, {product.sub_category?.title}</span>
+          <span className="lowercase">{product.tags?.join(", ") || 'N/A'}</span>
         </div>
       </div>
 

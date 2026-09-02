@@ -4,26 +4,12 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/src/components/ui/accordion";
+import type { ProductFaq as ProductFaqType } from "@/src/types/product.types";
 
-export function ProductFaq() {
-    const faqs = [
-        {
-            question: "Is this product suitable for outdoor use?",
-            answer: "This specific model is designed primarily for indoor use. While it can withstand occasional outdoor exposure, prolonged exposure to moisture and direct sunlight is not recommended as it may damage the finish."
-        },
-        {
-            question: "How do I claim the warranty?",
-            answer: "All our products come with a 2-year manufacturer's warranty covering structural defects. Keep your digital receipt and contact our support team to initiate a claim."
-        },
-        {
-            question: "Can I order custom colors or materials?",
-            answer: "Currently, we only offer the options listed on the website. We introduce new collections seasonally, so be sure to subscribe to our newsletter for updates on new colorways and materials."
-        },
-        {
-            question: "Do you offer bulk discounts for commercial projects?",
-            answer: "Yes! We have a dedicated B2B team. Please reach out via our Contact page and provide details about your project to get a custom quote."
-        }
-    ];
+export function ProductFaq({ faqs }: { faqs?: ProductFaqType[] }) {
+    if (!faqs || faqs.length === 0) {
+        return <p className="text-muted-foreground">No FAQs available.</p>;
+    }
 
     return (
         <div className="max-w-3xl">

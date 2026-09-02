@@ -20,6 +20,16 @@ export type ProductImage = {
     alt: string;
 }
 
+export type ProductSpecification = {
+    label: string;
+    value: string;
+};
+
+export type ProductFaq = {
+    question: string;
+    answer: string;
+};
+
 export type Product = {
     id: string;
     slug: string;
@@ -34,6 +44,12 @@ export type Product = {
     images: ProductImage[];
     rating?: number | null;
     review_count?: number | null;
+    availability?: "in-stock" | "out-of-stock" | "pre-order";
+    sku?: string;
+    tags?: string[];
+    specifications?: ProductSpecification[];
+    faqs?: ProductFaq[];
+    care_instructions?: string; // Markdown
 };
 
 export type Review = {

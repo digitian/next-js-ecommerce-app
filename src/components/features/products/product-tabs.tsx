@@ -28,7 +28,7 @@ export function ProductTabs({ product, reviews }: { product: Product, reviews: R
                     </TabsContent>
                     
                     <TabsContent value="specifications" className="focus-visible:outline-none focus-visible:ring-0">
-                        <ProductSpecifications />
+                        <ProductSpecifications specifications={product.specifications} />
                     </TabsContent>
                     
                     <TabsContent value="reviews" className="focus-visible:outline-none focus-visible:ring-0">
@@ -40,11 +40,11 @@ export function ProductTabs({ product, reviews }: { product: Product, reviews: R
                     </TabsContent>
 
                     <TabsContent value="faq" className="focus-visible:outline-none focus-visible:ring-0">
-                        <ProductFaq />
+                        <ProductFaq faqs={product.faqs} />
                     </TabsContent>
 
                     <TabsContent value="care" className="focus-visible:outline-none focus-visible:ring-0">
-                        <ProductCareInstructions />
+                        <ProductCareInstructions careInstructions={product.care_instructions} />
                     </TabsContent>
                 </div>
             </Tabs>

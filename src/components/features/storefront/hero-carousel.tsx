@@ -12,7 +12,10 @@ import {
   CarouselPrevious,
   CarouselDots,
 } from "@/src/components/ui/carousel"
-import { Button } from "@/src/components/ui/button"
+import { Button, buttonVariants } from "@/src/components/ui/button"
+import Link from "next/link"
+import { cn } from "@/src/lib/utils"
+import { ArrowRight } from "lucide-react"
 
 const slides = [
   {
@@ -73,9 +76,10 @@ export function HeroCarousel() {
                     <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                       {slide.subtitle}
                     </p>
-                    <Button size="lg" variant="default" className="text-lg px-8">
+                    <Link href="/products" className={cn(buttonVariants({size: "lg", variant: "default"}), "text-lg px-8")}>
                       {slide.cta}
-                    </Button>
+                      <ArrowRight />
+                    </Link>
                   </div>
                 </div>
               </div>

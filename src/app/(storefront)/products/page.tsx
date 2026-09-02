@@ -68,6 +68,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               initialProducts={productsData.items}
               categorySlug={category || "all"}
               subcategorySlug={subcategory}
+              columns={3}
             />
           </Suspense>
         </main>

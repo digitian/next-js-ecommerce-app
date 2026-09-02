@@ -84,7 +84,7 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
   };
 
   const FilterContent = (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 px-4 pb-4">
       <FieldSet>
         <FieldLegend>Category</FieldLegend>
         <RadioGroup
@@ -185,7 +185,7 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
             Filter & Sort
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
-            <SheetHeader className="mb-6 text-left">
+            <SheetHeader>
               <SheetTitle>Filters</SheetTitle>
               <SheetDescription className="sr-only">Apply filters to product list.</SheetDescription>
             </SheetHeader>

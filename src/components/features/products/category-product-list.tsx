@@ -15,9 +15,10 @@ interface CategoryProductListProps {
   initialProducts: Product[];
   categorySlug: string;
   subcategorySlug?: string;
+  columns?: 3 | 4;
 }
 
-export function CategoryProductList({ initialProducts, categorySlug, subcategorySlug }: CategoryProductListProps) {
+export function CategoryProductList({ initialProducts, categorySlug, subcategorySlug, columns = 4 }: CategoryProductListProps) {
   const [items, setItems] = useState<Product[]>(initialProducts);
   const [layout, setLayout] = useState<"grid" | "list">("grid");
   const [sort, setSort] = useState<string>("recommended");
@@ -212,7 +213,7 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
             pointerEvents: isTransitioning ? "none" : "auto",
           }}
           transition={{ duration: 0.3 }}
-          className={layout === "grid" ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" : "flex flex-col gap-4"}
+          className={layout === "grid" ? `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${columns === 4 ? 'lg:grid-cols-4' : ''} gap-6` : "flex flex-col gap-4"}
         >
           <AnimatePresence mode="popLayout">
             {items.map((product) => (
