@@ -35,5 +35,12 @@ export const categories: Category[] = [
         title: "House Decor",
         showcase_image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800",
         thumb_image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=150",
+    },
+    {
+        id: "cat_workspace",
+        slug: "workspace",
+        title: "Workspace",
+        showcase_image: "/images/rooms/workspace.jpg",
+        thumb_image: "/images/rooms/workspace.jpg",
     }
 ];

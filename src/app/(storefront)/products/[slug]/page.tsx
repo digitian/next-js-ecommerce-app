@@ -40,11 +40,11 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/products?category=${product.category.slug}`}>{product.category.title}</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${product.category.slug}`}>{product.category.title}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/products?category=${product.category.slug}`}>{product.sub_category.title}</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${product.category.slug}?subcategory=${product.sub_category.slug}`}>{product.sub_category.title}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

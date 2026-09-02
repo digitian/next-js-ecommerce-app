@@ -98,7 +98,7 @@ export function SiteFooter({ categories }: SiteFooterProps) {
                 {categories.map((category) => (
                   <li key={category.id}>
                     <Link
-                      href={`/products?category=${category.slug}`}
+                      href={`/${category.slug}`}
                       className="hover:text-primary transition-colors"
                     >
                       {category.title}

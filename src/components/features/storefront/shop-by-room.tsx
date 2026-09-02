@@ -15,21 +15,21 @@ const rooms = [
     name: "Bedroom",
     image: "/images/rooms/bedroom.jpg",
     className: "md:col-span-2 md:row-span-1",
-    href: "/products?category=bedroom",
+    href: "/bedroom",
   },
   {
     id: "kitchen",
     name: "Kitchen",
     image: "/images/rooms/kitchen.jpg",
     className: "md:col-span-1 md:row-span-1",
-    href: "/products?category=kitchen",
+    href: "/kitchen",
   },
   {
     id: "workspace",
     name: "Workspace",
     image: "/images/rooms/workspace.jpg",
     className: "md:col-span-1 md:row-span-1",
-    href: "/products?category=workspace",
+    href: "/workspace",
   },
 ];
 

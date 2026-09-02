@@ -38,7 +38,7 @@ export function DesktopMegaMenu({ categories = [], subcategories = [] }: Desktop
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <li className="row-span-3 md:row-span-4 h-full min-h-[200px] relative">
-                     <NavigationMenuLink render={<Link className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md relative overflow-hidden group" href={`/products?category=${category.slug}`} />}>
+                     <NavigationMenuLink render={<Link className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md relative overflow-hidden group" href={`/${category.slug}`} />}>
                             <div className="absolute inset-0 z-0">
                                 <Image src={category.thumb_image} alt={category.title} fill className="object-cover opacity-30 transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 300px" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
@@ -57,7 +57,7 @@ export function DesktopMegaMenu({ categories = [], subcategories = [] }: Desktop
                     <ListItem
                       key={sub.id}
                       title={sub.title}
-                      href={`/products?category=${category.slug}&subcategory=${sub.slug}`}
+                      href={`/${category.slug}?subcategory=${sub.slug}`}
                       thumbImage={sub.thumb_image}
                     >
                       Shop {sub.title.toLowerCase()}

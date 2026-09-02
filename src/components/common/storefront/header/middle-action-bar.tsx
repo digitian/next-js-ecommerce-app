@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export function MiddleActionBar() {
   return (
-    <div className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
+    <div className="w-full bg-background border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Mobile Menu & Logo */}
         <div className="flex items-center gap-4">

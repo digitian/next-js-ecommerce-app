@@ -13,6 +13,10 @@ function hydrateProduct(p: MockProductEntity): Product {
 
 export async function getProducts(filters?: {
     category?: string | null;
+    subcategory?: string | null;
+    minPrice?: number | null;
+    maxPrice?: number | null;
+    minRating?: number | null;
     sort?: string | null;
     skip?: number;
     take?: number;
@@ -23,6 +27,24 @@ export async function getProducts(filters?: {
         result = result.filter((p) => {
             return p.category.slug === filters.category;
         });
+    }
+
+    if (filters?.subcategory) {
+        result = result.filter((p) => {
+            return p.sub_category?.slug === filters.subcategory;
+        });
+    }
+
+    if (filters?.minPrice !== undefined && filters?.minPrice !== null) {
+        result = result.filter((p) => p.price >= filters.minPrice!);
+    }
+
+    if (filters?.maxPrice !== undefined && filters?.maxPrice !== null) {
+        result = result.filter((p) => p.price <= filters.maxPrice!);
+    }
+
+    if (filters?.minRating !== undefined && filters?.minRating !== null) {
+        result = result.filter((p) => (p.rating ?? 0) >= filters.minRating!);
     }
 
     if (filters?.sort) {
