@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { LocalizationSwitcher } from "./localization-switcher";
 import { Phone, HelpCircle } from "lucide-react";
+import { cookies } from "next/headers";
 
-export function TopUtilityBar() {
+export async function TopUtilityBar() {
+  const cookieStore = await cookies();
+  const language = cookieStore.get("language")?.value || "en";
+  const currency = cookieStore.get("currency")?.value || "USD";
+
   return (
     <div className="hidden w-full bg-muted/40 py-1.5 border-b border-border lg:block">
       <div className="container mx-auto flex items-center justify-between px-4">
@@ -25,7 +30,7 @@ export function TopUtilityBar() {
 
         {/* Right side: Localization */}
         <div className="flex items-center justify-end">
-          <LocalizationSwitcher />
+          <LocalizationSwitcher initialLanguage={language} initialCurrency={currency} />
         </div>
       </div>
     </div>

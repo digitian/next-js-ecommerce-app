@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/src/components/common/storefront/header/site-header";
 import { SiteFooter } from "@/src/components/common/storefront/footer/site-footer";
 import { BottomNavigationBar } from "@/src/components/common/storefront/header/bottom-navigation-bar";
+import { TopUtilityBar } from "@/src/components/common/storefront/header/top-utility-bar";
 import { MobileNavSheet } from "@/src/components/common/storefront/header/mobile-nav-sheet";
 import { getCategories, getSubCategories } from "@/src/lib/api/products";
 import React from "react";
@@ -17,6 +18,7 @@ export default async function StorefrontLayout({
 
   return (
     <>
+      <TopUtilityBar />
       <SiteHeader 
         bottomNav={<BottomNavigationBar categories={categories} />}
         mobileNav={<MobileNavSheet categories={categories} subcategories={subcategories} />}

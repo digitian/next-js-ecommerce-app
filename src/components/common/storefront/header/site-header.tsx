@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { TopUtilityBar } from "./top-utility-bar";
+
 import { MiddleActionBar } from "./middle-action-bar";
 
 interface SiteHeaderProps {
@@ -59,9 +59,6 @@ export function SiteHeader({ bottomNav, mobileNav }: SiteHeaderProps) {
 
   return (
     <>
-      {/* Top Utility Bar — scrolls away naturally, not part of sticky header */}
-      <TopUtilityBar />
-
       <header
         className="sticky w-full z-50 shadow-sm transition-[top] duration-300 ease-in-out"
         style={{ top: `${topOffset}px` }}
