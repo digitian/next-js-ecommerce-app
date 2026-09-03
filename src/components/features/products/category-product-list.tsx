@@ -66,12 +66,12 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
         return [...prev, ...newItems];
       });
       setHasNextPage(json.data.hasNextPage);
-    } catch (err) {
+    } catch {
       setError("Failed to load more products.");
     } finally {
       setLoading(false);
     }
-  }, [categorySlug, subcategorySlug, hasNextPage, items.length, loading, sort]);
+  }, [categorySlug, subcategorySlug, hasNextPage, items.length, loading, sort, searchParams]);
 
   const { ref, inView } = useInView({
     rootMargin: "400px 0px",
@@ -80,6 +80,7 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
 
   useEffect(() => {
     if (inView) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- kicks off an async fetch (loadMore sets a loading flag before awaiting).
       loadMore();
     }
   }, [inView, loadMore]);
@@ -108,7 +109,7 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
           setItems(json.data.items);
           setHasNextPage(json.data.hasNextPage);
         }
-      } catch (err) {
+      } catch {
         if (isMounted) setError("Failed to apply filters.");
       } finally {
         if (isMounted) {
@@ -154,7 +155,7 @@ export function CategoryProductList({ initialProducts, categorySlug, subcategory
       
       setItems(json.data.items);
       setHasNextPage(json.data.hasNextPage);
-    } catch (err) {
+    } catch {
       setError("Failed to apply sorting.");
     } finally {
       setIsTransitioning(false);

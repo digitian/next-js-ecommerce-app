@@ -27,7 +27,7 @@ export function TestimonialCard({ testimonial, className }: TestimonialCardProps
       </CardHeader>
       <CardContent className="flex-1">
         <p className="leading-relaxed text-muted-foreground">
-          "{testimonial.text}"
+          &quot;{testimonial.text}&quot;
         </p>
       </CardContent>
       <CardFooter className="pt-4">

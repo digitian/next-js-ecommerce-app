@@ -19,9 +19,33 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "Marlow Home";
+const siteDescription =
+  "Marlow Home is a modern furniture and home goods storefront \u2014 sofas, tables, lighting, and decor designed to bring warmth and balance to everyday spaces.";
+
 export const metadata: Metadata = {
-  title: "Storefront",
-  description: "Storefront",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${appName} | Modern Furniture & Home Goods`,
+    template: `%s | ${appName}`,
+  },
+  description: siteDescription,
+  openGraph: {
+    title: appName,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: appName,
+    images: [{ url: "/images/brand-story.jpg", width: 1200, height: 900 }],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: appName,
+    description: siteDescription,
+    images: ["/images/brand-story.jpg"],
+  },
 };
 
 export default function RootLayout({

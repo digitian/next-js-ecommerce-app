@@ -151,12 +151,13 @@ export default async function AccountPage() {
                 Shopping Cart
               </Button>
               <Button
-                variant="ghost"
-                className="w-full justify-start text-muted-foreground"
-                disabled
+                variant="outline"
+                className="w-full justify-start"
+                render={<Link href="/account/wishlist" />}
+                nativeButton={false}
               >
                 <Heart className="size-4 mr-2" />
-                Wishlist (Coming Soon)
+                Wishlist
               </Button>
             </CardContent>
           </Card>
@@ -238,7 +239,7 @@ export default async function AccountPage() {
               </Table>
             ) : (
               <div className="text-center py-6 text-muted-foreground text-sm">
-                You haven't placed any orders yet.
+                You haven&apos;t placed any orders yet.
               </div>
             )}
           </CardContent>

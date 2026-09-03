@@ -6,7 +6,6 @@ import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
@@ -87,7 +86,7 @@ export function SearchBar() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
-              <p>Search results for "{query}" will appear here.</p>
+              <p>Search results for &quot;{query}&quot; will appear here.</p>
               <p className="text-sm mt-2">Connect to real API endpoint later.</p>
             </div>
           )}

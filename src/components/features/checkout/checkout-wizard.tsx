@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Check, ChevronRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
@@ -14,7 +14,6 @@ import {
   FieldGroup, 
   FieldLabel, 
   FieldError, 
-  FieldContent,
   FieldSet,
   FieldLegend
 } from "@/src/components/ui/field";
@@ -83,7 +82,7 @@ export function CheckoutWizard() {
   }, [isHydrated, items.length, router, hasSubmitted]);
 
   const handleNext = async () => {
-    let fieldsToValidate: any[] = [];
+    let fieldsToValidate: (keyof CheckoutFormValues)[] = [];
     
     if (currentStep === 0) {
       fieldsToValidate = [
@@ -140,7 +139,7 @@ export function CheckoutWizard() {
       } else {
         toast.error(result.error || "Failed to place order.");
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
@@ -264,7 +263,7 @@ export function CheckoutWizard() {
                   <FieldLegend variant="legend">Shipping Method</FieldLegend>
                   <RadioGroup 
                     defaultValue={shippingMethod} 
-                    onValueChange={(val) => setValue("shippingMethod", val as any)}
+                    onValueChange={(val) => setValue("shippingMethod", val as "standard" | "express")}
                   >
                     <div className="flex items-center space-x-2 border rounded-md p-4">
                       <RadioGroupItem value="standard" id="standard" />
@@ -355,7 +354,7 @@ export function CheckoutWizard() {
                         placeholder="CVC" 
                         {...cardCvcRest} 
                         onChange={(e) => {
-                          let val = e.target.value.replace(/\D/g, "");
+                          const val = e.target.value.replace(/\D/g, "");
                           e.target.value = val.substring(0, 3);
                           onCardCvcChange(e);
                         }}

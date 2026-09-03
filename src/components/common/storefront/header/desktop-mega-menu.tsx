@@ -85,7 +85,7 @@ const ListItem = React.forwardRef<
 >(({ className, title, children, thumbImage, ...props }, ref) => {
   return (
     <li>
-      <NavigationMenuLink render={<Link href={props.href || ""} ref={ref as any} className={cn("block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", className)} {...props} />}>
+      <NavigationMenuLink render={<Link href={props.href || ""} ref={ref as React.Ref<HTMLAnchorElement>} className={cn("block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", className)} {...props} />}>
           <div className="flex items-center gap-3">
              {thumbImage && (
                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-md bg-muted">

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, Printer, ArrowLeft } from "lucide-react";
@@ -9,17 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/ca
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/src/components/ui/table";
 import { useCartStore } from "@/src/hooks/use-cart-store";
 import { formatCurrency } from "@/src/lib/helpers/format-currency";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 
 export function SuccessView() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") || "ORD-UNKNOWN";
   
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydrated();
   const lastOrder = useCartStore((state) => state.lastOrder);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) return null;
 
@@ -59,7 +55,7 @@ export function SuccessView() {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Order Confirmed!</h1>
         <p className="text-muted-foreground text-lg max-w-xl">
-          Thank you for your purchase. We've received your order and will begin processing it shortly.
+          Thank you for your purchase. We&apos;ve received your order and will begin processing it shortly.
         </p>
       </div>
 

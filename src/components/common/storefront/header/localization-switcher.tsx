@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,43 +23,33 @@ const currencies = [
   { code: "GBP", symbol: "£" },
 ];
 
-export function LocalizationSwitcher() {
+export function LocalizationSwitcher({
+  initialLanguage = "en",
+  initialCurrency = "USD",
+}: {
+  initialLanguage?: string;
+  initialCurrency?: string;
+}) {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-  const [currency, setCurrency] = useState("USD");
-  const [language, setLanguage] = useState("en");
+  const [currency, setCurrency] = useState(initialCurrency);
+  const [language, setLanguage] = useState(initialLanguage);
+  const isFirstRender = useRef(true);
 
+  // Persist the choice to cookies (and re-fetch server data) as a reaction to
+  // state changing, rather than mutating `document` directly inside the click
+  // handler — keeps the write out of render/event-handler scope.
   useEffect(() => {
-    setMounted(true);
-    // In a real app, we would parse document.cookie here
-    const cookies = document.cookie.split("; ");
-    const currencyCookie = cookies.find((row) => row.startsWith("currency="));
-    const languageCookie = cookies.find((row) => row.startsWith("language="));
-    
-    if (currencyCookie) setCurrency(currencyCookie.split("=")[1]);
-    if (languageCookie) setLanguage(languageCookie.split("=")[1]);
-  }, []);
-
-  const changeCurrency = (code: string) => {
-    document.cookie = `currency=${code}; path=/; max-age=31536000`;
-    setCurrency(code);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    document.cookie = `currency=${currency}; path=/; max-age=31536000`;
+    document.cookie = `language=${language}; path=/; max-age=31536000`;
     router.refresh();
-  };
+  }, [currency, language, router]);
 
-  const changeLanguage = (code: string) => {
-    document.cookie = `language=${code}; path=/; max-age=31536000`;
-    setLanguage(code);
-    router.refresh();
-  };
-
-  if (!mounted) {
-    return (
-      <div className="flex items-center gap-2 text-xs opacity-0">
-        <div className="w-16 h-4" />
-        <div className="w-16 h-4" />
-      </div>
-    );
-  }
+  const changeCurrency = (code: string) => setCurrency(code);
+  const changeLanguage = (code: string) => setLanguage(code);
 
   return (
     <div className="flex items-center gap-2">

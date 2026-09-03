@@ -4,13 +4,12 @@ import { getUserOrders } from "@/src/lib/api/orders";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   await delay(800 + Math.random() * 400); // simulate network latency
   
   try {
-    const body = await request.json();
-    
-    // In a real app we would validate `body` against Zod schema and save to DB
+    // In a real app we would parse and validate the request body against a
+    // Zod schema and persist the order — this mock just echoes a fake order id.
     
     return NextResponse.json({
       success: true,
@@ -20,7 +19,7 @@ export async function POST(request: NextRequest) {
         message: "Order placed successfully",
       }
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to process order" },
       { status: 400 }
@@ -42,7 +41,7 @@ export async function GET(request: NextRequest) {
   try {
     const orders = await getUserOrders(user.id);
     return NextResponse.json({ success: true, data: orders });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to fetch orders" }, { status: 500 });
   }
 }

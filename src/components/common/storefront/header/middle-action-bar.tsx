@@ -1,11 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Heart } from "lucide-react";
 
 import { SearchBar } from "./search-bar";
 import { CartTrigger } from "@/src/components/features/storefront/cart-trigger";
+import { WishlistTrigger } from "@/src/components/features/storefront/wishlist-trigger";
 import { ProfileDropdown } from "@/src/components/features/auth/profile-dropdown";
-import { Button } from "@/src/components/ui/button";
 
 export function MiddleActionBar({ mobileNav }: { mobileNav?: React.ReactNode }) {
   return (
@@ -43,10 +42,9 @@ export function MiddleActionBar({ mobileNav }: { mobileNav?: React.ReactNode }) 
           
           <ProfileDropdown />
           
-          <Button variant="ghost" size="icon" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
-            <Heart className="size-5" />
-            <span className="sr-only">Wishlist</span>
-          </Button>
+          <div className="hidden sm:inline-flex">
+            <WishlistTrigger />
+          </div>
 
           <CartTrigger />
         </div>

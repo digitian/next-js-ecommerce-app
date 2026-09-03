@@ -184,9 +184,6 @@ function LoginFormContent({
                   )}
                   Login
                 </Button>
-                <Button variant="outline" type="button" className="w-full" disabled={isLoading}>
-                  Login with Google
-                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <Link

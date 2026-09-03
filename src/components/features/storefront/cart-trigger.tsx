@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
@@ -15,20 +14,17 @@ import {
 import { useCartStore } from "@/src/hooks/use-cart-store";
 import { CartItem } from "@/src/components/features/cart-item";
 import { formatCurrency } from "@/src/lib/helpers/format-currency";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 
 export function CartTrigger() {
-  const [mounted, setMounted] = useState(false);
-  
+  const mounted = useHydrated();
+
   const isHydrated = useCartStore((state) => state.isHydrated);
   const items = useCartStore((state) => state.items);
   const totalItems = useCartStore((state) => state.totalItems);
   const subtotal = useCartStore((state) => state.subtotal);
   const isCartOpen = useCartStore((state) => state.isCartOpen);
   const setCartOpen = useCartStore((state) => state.setCartOpen);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isReady = mounted && isHydrated;
 
@@ -38,14 +34,10 @@ export function CartTrigger() {
         <ShoppingBag className="size-5 text-muted-foreground group-hover:text-foreground transition-colors" />
         <span className="sr-only">Open Cart</span>
         
-        {isReady ? (
-          totalItems > 0 && (
-            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
-              {totalItems}
-            </span>
-          )
-        ) : (
-          <Skeleton className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full" />
+        {isReady && totalItems > 0 && (
+          <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
+            {totalItems}
+          </span>
         )}
       </SheetTrigger>
       <SheetContent className="w-full! sm:max-w-md! flex flex-col">
@@ -62,7 +54,7 @@ export function CartTrigger() {
             <ShoppingBag className="size-16 text-muted-foreground/30" />
             <div className="text-lg font-medium">Your cart is empty</div>
             <p className="text-sm text-muted-foreground text-center">
-              Looks like you haven't added anything to your cart yet.
+              Looks like you haven&apos;t added anything to your cart yet.
             </p>
             <Button className="mt-4" onClick={() => setCartOpen(false)}>
               Continue Shopping

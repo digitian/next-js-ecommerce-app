@@ -8,8 +8,10 @@ import { Button } from "@/src/components/ui/button"
 
 import type { Product } from "@/src/types/product.types"
 import { formatCurrency } from "@/src/lib/helpers/format-currency"
-import { useState } from "react"
 import { useCartStore } from "@/src/hooks/use-cart-store"
+import { useWishlistStore } from "@/src/hooks/use-wishlist-store"
+import { toast } from "sonner"
+import { useHydrated } from "@/src/hooks/use-hydrated"
 
 interface ProductCardProps {
   product: Product;
@@ -25,6 +27,30 @@ export default function ProductCard({ product, layout = "grid" }: ProductCardPro
   };
 
   const addItem = useCartStore((state) => state.addItem);
+  const toggleWishlistItem = useWishlistStore((state) => state.toggleItem);
+  const isWishlisted = useWishlistStore((state) => state.items.some(item => item.id === product.id));
+  const isHydrated = useWishlistStore((state) => state.isHydrated);
+  
+  const mounted = useHydrated();
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlistItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      base_price: product.base_price,
+      image: product.images[0]?.url || '',
+    });
+    
+    if (isWishlisted) {
+      toast("Removed from wishlist", { description: `${product.name} removed from your wishlist.` });
+    } else {
+      toast.success("Added to wishlist", { description: `${product.name} added to your wishlist.` });
+    }
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -60,10 +86,12 @@ export default function ProductCard({ product, layout = "grid" }: ProductCardPro
               variant="secondary"
               size="icon"
               className="h-9 w-9 rounded-full bg-background/80 backdrop-blur-sm shadow-sm hover:bg-background"
-              onClick={handleActionClick}
-              aria-label="Add to wishlist"
+              onClick={handleToggleWishlist}
+              aria-label={mounted && isHydrated && isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <Heart className="h-4 w-4" />
+              <Heart 
+                className={`h-4 w-4 transition-colors ${mounted && isHydrated && isWishlisted ? 'fill-primary text-primary' : ''}`} 
+              />
             </Button>
             <Button
               variant="secondary"

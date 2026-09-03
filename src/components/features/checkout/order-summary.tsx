@@ -2,7 +2,7 @@
 
 import { useCartStore } from "@/src/hooks/use-cart-store";
 import { formatCurrency } from "@/src/lib/helpers/format-currency";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/src/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { Separator } from "@/src/components/ui/separator";
 import Image from "next/image";
 

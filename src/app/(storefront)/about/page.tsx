@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ArrowRight, Leaf, PenTool, ShieldCheck, Heart } from "lucide-react";
 
-import { Button, buttonVariants } from "@/src/components/ui/button";
+import { buttonVariants } from "@/src/components/ui/button";
 import {
   Card,
   CardContent,
@@ -70,12 +70,12 @@ export default function AboutPage() {
                 Founded on the principles of Scandinavian minimalism and traditional craftsmanship, we started with a simple idea: that everyday objects should be both deeply functional and quietly beautiful.
               </p>
               <p>
-                Every piece in our collection is thoughtfully designed to strip away the unnecessary, leaving only what is essential. We work with artisans who share our dedication to honest materials and timeless techniques, ensuring that our products don't just look good today, but will gracefully age in your home for generations.
+                Every piece in our collection is thoughtfully designed to strip away the unnecessary, leaving only what is essential. We work with artisans who share our dedication to honest materials and timeless techniques, ensuring that our products don&apos;t just look good today, but will gracefully age in your home for generations.
               </p>
             </div>
             <Separator className="my-8 w-12" />
             <p className="font-medium text-foreground">
-              "Design is not just what it looks like and feels like. Design is how it works."
+              &quot;Design is not just what it looks like and feels like. Design is how it works.&quot;
             </p>
           </div>
         </div>

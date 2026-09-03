@@ -95,6 +95,7 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs initial scroll state from the embla API the moment it connects.
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
@@ -260,6 +261,7 @@ const CarouselDots = React.forwardRef<
   React.useEffect(() => {
     if (!api) return
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs initial dot/scroll state from the embla API the moment it connects.
     onInit(api)
     onSelect(api)
     api.on("reInit", onInit)

@@ -102,7 +102,7 @@ export default async function OrdersPage() {
             <Clock className="size-12 mx-auto text-muted-foreground mb-4 opacity-50" />
             <h3 className="text-lg font-medium text-foreground mb-2">No orders found</h3>
             <p className="text-muted-foreground mb-6">
-              You haven't placed any orders with us yet.
+              You haven&apos;t placed any orders with us yet.
             </p>
             <Button
               render={<Link href="/products" />}

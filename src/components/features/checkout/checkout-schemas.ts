@@ -18,7 +18,7 @@ export const checkoutSchema = z.object({
 
   // Shipping Method
   shippingMethod: z.enum(["standard", "express"], {
-    required_error: "Please select a shipping method.",
+    error: "Please select a shipping method.",
   }),
 
   // Payment

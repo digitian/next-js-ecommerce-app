@@ -47,7 +47,7 @@ export function ForgotPasswordForm({
     }
   });
 
-  async function onSubmit(data: ForgotPasswordFormValues) {
+  async function onSubmit() {
     setIsLoading(true);
     // Simulate network request
     await new Promise((resolve) => setTimeout(resolve, 1000));

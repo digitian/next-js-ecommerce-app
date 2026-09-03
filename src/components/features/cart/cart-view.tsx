@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
@@ -10,18 +9,14 @@ import { Skeleton } from "@/src/components/ui/skeleton";
 import { useCartStore } from "@/src/hooks/use-cart-store";
 import { formatCurrency } from "@/src/lib/helpers/format-currency";
 import { FullCartItem } from "./full-cart-item";
+import { useHydrated } from "@/src/hooks/use-hydrated";
 
 export function CartView() {
-  const [mounted, setMounted] = useState(false);
-  
+  const mounted = useHydrated();
+
   const items = useCartStore((state) => state.items);
   const subtotal = useCartStore((state) => state.subtotal);
   const isHydrated = useCartStore((state) => state.isHydrated);
-
-  // Prevent hydration errors by only rendering after mount
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted || !isHydrated) {
     return (
@@ -45,10 +40,10 @@ export function CartView() {
         </div>
         <h2 className="text-2xl font-bold tracking-tight">Your cart is empty</h2>
         <p className="text-muted-foreground mt-2 mb-8 max-w-sm">
-          Looks like you haven't added anything to your cart yet.
+          Looks like you haven&apos;t added anything to your cart yet.
         </p>
-        <Button asChild size="lg">
-          <Link href="/products">Explore Products</Link>
+        <Button size="lg" render={<Link href="/products" />} nativeButton={false}>
+          Explore Products
         </Button>
       </div>
     );
@@ -101,8 +96,8 @@ export function CartView() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button asChild size="lg" className="w-full">
-              <Link href="/checkout">Proceed to Checkout</Link>
+            <Button size="lg" className="w-full" render={<Link href="/checkout" />} nativeButton={false}>
+              Proceed to Checkout
             </Button>
           </CardFooter>
         </Card>

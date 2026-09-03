@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/src/components/ui/sheet";
 import { Button } from "@/src/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
@@ -29,8 +29,11 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
   const [localSubcategory, setLocalSubcategory] = useState(searchParams.get("subcategory") || "all");
   const [localRating, setLocalRating] = useState(searchParams.get("minRating") || "all");
 
-  // Sync from URL to local state when URL changes externally
+  // Sync from URL to local state when URL changes externally (e.g. back/forward
+  // navigation). Local state is intentionally decoupled from the URL the rest of
+  // the time so dragging the slider doesn't push a route change on every frame.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPriceRange([
       searchParams.has("minPrice") ? Number(searchParams.get("minPrice")) : 0,
       searchParams.has("maxPrice") ? Number(searchParams.get("maxPrice")) : 100000,
@@ -63,18 +66,6 @@ export function ProductFilters({ categories, subcategories }: ProductFiltersProp
     return () => clearTimeout(t);
   }, [localCategory, localSubcategory, localRating, pathname, router, searchParams]);
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set(name, value);
-      } else {
-        params.delete(name);
-      }
-      return params.toString();
-    },
-    [searchParams]
-  );
 
   const handlePriceCommit = (value: number | readonly number[]) => {
     const valArray = Array.isArray(value) ? [...value] : [value];

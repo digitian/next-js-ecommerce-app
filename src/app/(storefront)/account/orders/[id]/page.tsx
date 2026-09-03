@@ -13,7 +13,6 @@ import { Button } from "@/src/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
@@ -52,7 +51,7 @@ export default async function OrderDetailPage({
       <div className="container mx-auto px-4 py-20 text-center">
         <h1 className="text-heading">Order Not Found</h1>
         <p className="text-subheading">
-          We couldn't find the order you're looking for, or you don't have permission to view it.
+          We couldn&apos;t find the order you&apos;re looking for, or you don&apos;t have permission to view it.
         </p>
         <Button render={<Link href="/account/orders" />} nativeButton={false}>
           Return to Orders

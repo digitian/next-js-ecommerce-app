@@ -63,7 +63,7 @@ export function ContactForm() {
       reset();
       turnstileRef.current?.reset();
       setToken(null);
-    } catch (error) {
+    } catch {
       toast.error("Failed to send message. Please try again later.");
       turnstileRef.current?.reset();
       setToken(null);

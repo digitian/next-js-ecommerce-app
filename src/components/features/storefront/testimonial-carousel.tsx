@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
@@ -18,7 +18,7 @@ interface TestimonialCarouselProps {
 }
 
 export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
-  const plugin = useRef(
+  const [plugin] = useState(() =>
     Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
@@ -28,7 +28,7 @@ export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) 
         align: "start",
         loop: true,
       }}
-      plugins={[plugin.current]}
+      plugins={[plugin]}
       className="w-full"
     >
       <CarouselContent>

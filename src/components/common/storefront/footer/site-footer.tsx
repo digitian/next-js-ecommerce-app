@@ -69,7 +69,7 @@ export function SiteFooter({ categories }: SiteFooterProps) {
 
               <div className="flex flex-col gap-4 text-sm text-muted-foreground">
                 <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. In repudiandae sint voluptatibus.
+                  Thoughtfully designed furniture and home goods for everyday living — built to last, styled to feel like home.
                 </p>
 
                 <ul className="flex flex-col gap-3">
@@ -164,7 +164,7 @@ export function SiteFooter({ categories }: SiteFooterProps) {
                   <Button>Subscribe</Button>
                 </form>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. In repudiandae sint voluptatibus.
+                  Be the first to know about new arrivals, seasonal collections, and members-only offers.
                 </p>
               </div>
             </div>

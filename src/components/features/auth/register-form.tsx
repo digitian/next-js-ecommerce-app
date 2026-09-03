@@ -285,9 +285,6 @@ export function RegisterForm({
                   {isLoading && <Loader2 className="animate-spin" data-icon="inline-start" />}
                   Register
                 </Button>
-                <Button variant="outline" type="button" disabled={isLoading}>
-                  Register with Google
-                </Button>
                 <FieldDescription className="text-center">
                   Already have an account?{" "}
                   <Link href="/login" className="underline underline-offset-4 hover:text-primary">

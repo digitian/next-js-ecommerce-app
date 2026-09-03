@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
   CarouselDots,
 } from "@/src/components/ui/carousel"
-import { Button, buttonVariants } from "@/src/components/ui/button"
+import { buttonVariants } from "@/src/components/ui/button"
 import Link from "next/link"
 import { cn } from "@/src/lib/utils"
 import { ArrowRight } from "lucide-react"
@@ -42,17 +42,17 @@ const slides = [
 ]
 
 export function HeroCarousel() {
-  const plugin = React.useRef(
+  const [plugin] = React.useState(() =>
     Autoplay({ delay: 2000, stopOnInteraction: true })
   )
 
   return (
     <div className="relative w-full group">
       <Carousel
-        plugins={[plugin.current]}
+        plugins={[plugin]}
         className="w-full"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={() => plugin.current.play()}
+        onMouseEnter={plugin.stop}
+        onMouseLeave={() => plugin.play()}
         opts={{
           loop: true,
         }}
