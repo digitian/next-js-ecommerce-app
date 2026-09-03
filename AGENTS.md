@@ -17,7 +17,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 A **single-brand home/lifestyle e-commerce storefront** (IKEA/Muji-inspired) built with Next.js 16, React 19, and TypeScript. This is the **frontend only** — the backend does not exist yet. All API interactions are mocked via Next.js Route Handlers serving static data.
 
 **Phase**: Frontend development with mocked backend  
-**Stack**: Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui (base-vega style) · Zustand · Auth.js · next-intl · react-hook-form + zod
+**Stack**: Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui (base-vega style) · Zustand · custom cookie/session auth · react-hook-form + zod
 
 ---
 
@@ -33,26 +33,34 @@ src/
 │   │   │   ├── route.ts              # GET /api/products (listing, filtering, pagination)
 │   │   │   └── [slug]/
 │   │   │       └── route.ts          # GET /api/products/:slug
-│   │   ├── cart/
-│   │   │   └── route.ts              # GET, POST, PUT, DELETE /api/cart
+│   │   ├── auth/
+│   │   │   └── route.ts              # POST /api/auth (login, register, logout)
 │   │   ├── orders/
 │   │   │   └── route.ts              # GET, POST /api/orders
-│   │   ├── auth/
-│   │   │   └── [...nextauth]/
-│   │   │       └── route.ts          # Auth.js catch-all handler
-│   │   └── blog/
-│   │       └── route.ts              # GET /api/blog
+│   │   ├── contact/
+│   │   │   └── route.ts              # POST /api/contact
+│   │   ├── testimonials/
+│   │   │   └── route.ts              # GET /api/testimonials
+│   │   └── wishlist/
+│   │       └── route.ts              # GET, POST, DELETE /api/wishlist
 │   ├── (storefront)/                 # Public storefront routes
 │   │   ├── page.tsx                  # Home / landing page
 │   │   ├── layout.tsx                # Storefront layout
 │   │   ├── products/
-│   │   │   ├── page.tsx              # Product listing (filtering, sorting, search)
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx          # Product detail page
+│   │   │   └── page.tsx              # Product listing (filtering, sorting)
+│   │   ├── [category-slug]/
+│   │   │   └── page.tsx              # Category product listing
 │   │   ├── cart/
-│   │   │   └── page.tsx              # Shopping cart
-│   │   └── checkout/
-│   │       └── page.tsx              # Checkout flow
+│   │   │   └── page.tsx              # Shopping cart (Zustand-only, no API route)
+│   │   ├── checkout/
+│   │   │   └── page.tsx              # Checkout flow
+│   │   ├── account/
+│   │   │   └── page.tsx              # User account (protected)
+│   │   ├── about/
+│   │   │   └── page.tsx
+│   │   ├── contact/
+│   │   │   └── page.tsx
+│   │   └── (policies)/               # Static policy pages
 │   ├── (auth)/                       # Authentication routes
 │   │   ├── layout.tsx                # Authentication layout
 │   │   ├── login/
@@ -61,73 +69,53 @@ src/
 │   │   │   └── page.tsx
 │   │   └── forgot-password/
 │   │       └── page.tsx
-│   ├── (admin)/                      # Protected — requires admin role
-│   │   └── dashboard/
-│   │       └── page.tsx              # Product & order management
-│   ├── (content)/                    # Static / content pages
-│   │   ├── blog/
-│   │   │   ├── page.tsx              # Blog listing
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx          # Blog post detail
-│   │   └── contact/
-│   │       └── page.tsx              # Contact / support form
 │   ├── layout.tsx                    # Root layout
 │   └── favicon.ico
 │
 ├── components/
 │   ├── ui/                           # shadcn primitives — DO NOT edit directly
-│   ├── common/                       # Shared composite components
-│   │   ├── header.tsx                # Site header with nav
-│   │   ├── footer.tsx                # Site footer
-│   │   ├── navbar.tsx                # Navigation bar
-│   │   └── search-bar.tsx            # Search with autocomplete
-│   ├── features/                     # Feature-specific components
-│   │   ├── product-card.tsx
-│   │   ├── cart-item.tsx
-│   │   ├── checkout-form.tsx
-│   │   ├── order-summary.tsx
-│   │   └── ...
+│   ├── common/                       # Shared composite components (header, footer, etc.)
+│   └── features/                     # Feature-specific components
+│       ├── products/                 # Product cards, filters, lists
+│       ├── cart/                     # Cart items, drawer
+│       ├── checkout/                 # Checkout wizard, forms
+│       ├── storefront/               # Home page sections (hero, featured, etc.)
+│       └── ...
 │
 ├── hooks/                            # Custom React hooks & Zustand stores
-│   ├── use-cart-store.ts             # Cart state (Zustand)
-│   ├── use-auth-store.ts            # Auth session state (Zustand)
-│   ├── use-ui-store.ts              # UI state — sidebar, modals (Zustand)
-│   ├── use-local-storage.ts          # localStorage read/write
-│   ├── use-media-query.ts            # Responsive breakpoint detection
+│   ├── use-cart-store.ts             # Cart state (Zustand + localStorage persist)
+│   ├── use-auth-store.ts             # Auth session state (Zustand + localStorage persist)
+│   ├── use-wishlist-store.ts         # Wishlist state (Zustand + localStorage persist)
+│   ├── use-hydrated.ts               # SSR hydration guard (useSyncExternalStore-based)
 │   └── ...
 │
 ├── lib/
 │   ├── api/                          # Data-access layer
-│   │   ├── products.ts               # getProducts(), getProductBySlug() — direct data access
-│   │   ├── auth.ts                   # Auth helper functions
-│   │   ├── cart.ts                   # Cart data functions
+│   │   ├── products.ts               # getProducts(), getProductBySlug()
+│   │   ├── auth.ts                   # Auth helper functions (validateCredentials, etc.)
 │   │   ├── orders.ts                 # Order data functions
+│   │   ├── wishlist.ts               # Wishlist data functions
+│   │   ├── actions/                  # Next.js Server Actions
 │   │   └── mockdata/                 # Static mock data (typed TS files)
 │   │       ├── products.ts
 │   │       ├── users.ts
 │   │       ├── orders.ts
-│   │       ├── categories.ts
-│   │       └── blog-posts.ts
+│   │       └── categories.ts
 │   ├── helpers/                      # Pure utility/helper functions
-│   │   ├── format-currency.ts        # Multi-currency formatting via Intl.NumberFormat
-│   │   ├── format-date.ts
-│   │   └── ...
+│   │   ├── format-currency.ts
+│   │   └── format-date.ts
 │   ├── constants/                    # App-wide constants
-│   │   ├── routes.ts                 # Route path constants
-│   │   ├── config.ts                 # App config (API base URL, pagination defaults, etc.)
-│   │   └── enums.ts                  # Shared enums (OrderStatus, UserRole, etc.)
 │   └── utils.ts                      # shadcn cn() utility — DO NOT move
 │
 ├── styles/
 │   └── globals.css                   # Global styles, Tailwind directives, CSS variables
 │
 └── types/                            # TypeScript type definitions (organized by domain)
-    ├── product.types.ts              # Product, Category, ProductVariant
-    ├── cart.types.ts                 # CartItem, Cart
-    ├── user.types.ts                 # User, UserProfile, AuthSession
-    ├── order.types.ts                # Order, OrderItem, OrderStatus
-    ├── blog.types.ts                 # BlogPost, BlogCategory
-    └── api.types.ts                  # ApiResponse<T>, PaginatedResponse<T>, ApiError
+    ├── product.types.ts
+    ├── cart.types.ts
+    ├── user.types.ts
+    ├── order.types.ts
+    └── api.types.ts
 ```
 
 ---
@@ -201,19 +189,21 @@ This project uses a **hybrid data-fetching strategy** with no Axios dependency:
 └─────────────────────┘         └──────────────────────┘
 ```
 
-### Authentication — Auth.js (NextAuth v5)
+### Authentication — Custom Cookie/Session
 
-- Use Auth.js with a **credentials provider** that validates against mock user data.
-- Protect routes via Next.js middleware (`middleware.ts` at project root).
-- `(account)/` routes require any authenticated user.
-- `(admin)/` routes require `role: "admin"`.
-- Store session info in Zustand's `useAuthStore` for client-side access.
+- Auth is implemented with a **custom credentials flow**: `POST /api/auth` validates against mock user data in `src/lib/api/mockdata/users.ts` and sets a signed `session` cookie via the Route Handler response.
+- **No Auth.js / NextAuth** — do not add it unless the project explicitly migrates.
+- Route protection is enforced in `middleware.ts` using `request.cookies.has('session')`:
+  - `/account/*` routes require a valid session cookie; unauthenticated users are redirected to `/login?callbackUrl=...`.
+  - Auth routes (`/login`, `/register`, `/forgot-password`) redirect authenticated users to `/`.
+- Client-side session state lives in `useAuthStore` (Zustand + localStorage persist). The store is hydrated from the cookie on app load via `AuthProvider`.
+- Language (`en`) and currency (`USD`) preferences are set as cookies by the middleware on first visit.
 
-### Internationalization — next-intl
+### Internationalization
 
-- Set up next-intl infrastructure with **English (en)** as the primary locale.
-- All user-facing strings should use translation keys from the start, even if only English is available.
-- This ensures adding new locales later requires zero refactoring — only translation files.
+- **No next-intl** — i18n is not implemented yet. All strings are hardcoded in English.
+- Currency and language preferences are stored as plain cookies and read client-side.
+- When adding i18n in the future, prefer next-intl; the middleware is already structured to support it.
 
 ### Currency — Multi-currency
 

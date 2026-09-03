@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 
-  // For testing, will be deleted in prod.
+  // Product images are served from picsum.photos (placeholder) and Unsplash (lifestyle/room-scene imagery).
+  // These remote patterns are intentional and permanent for the current phase.
   images: {
     remotePatterns: [
       {
