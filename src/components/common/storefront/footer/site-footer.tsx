@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Mail, Phone, Music2 } from "lucide-react";
 import type { Category } from "@/src/types/product.types";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
 
 
 function Facebook(props: React.SVGProps<SVGSVGElement>) {
@@ -121,19 +123,7 @@ export function SiteFooter({ categories }: SiteFooterProps) {
               </ul>
             </div>
 
-            {/* Column 4: Useful links */}
-            <div className="flex flex-col gap-6">
-              <h3 className="text-lg font-semibold text-white">Useful links</h3>
-              <ul className="flex flex-col gap-4 text-sm text-muted-foreground">
-                <li><Link href="/blog" className="hover:text-primary transition-colors">Latest News</Link></li>
-                <li><Link href="/profile" className="hover:text-primary transition-colors">My Account</Link></li>
-                <li><Link href="/size-guide" className="hover:text-primary transition-colors">Size Guide</Link></li>
-                <li><Link href="/faqs" className="hover:text-primary transition-colors">FAQs</Link></li>
-                <li><Link href="/faqs-2" className="hover:text-primary transition-colors">FAQs 2</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 5: Follow */}
+            {/* Column 4: Follow */}
             <div className="flex flex-col gap-6">
               <h3 className="text-lg font-semibold text-white">Follow</h3>
               <ul className="flex flex-col gap-4 text-sm text-muted-foreground">
@@ -163,6 +153,20 @@ export function SiteFooter({ categories }: SiteFooterProps) {
                   </a>
                 </li>
               </ul>
+            </div>
+
+            {/* Column 5: Newsletter */}
+            <div className="flex flex-col gap-6">
+              <h3 className="text-lg font-semibold text-white">Newsletter</h3>
+              <div className="flex flex-col gap-4 text-sm text-muted-foreground">
+                <form className="flex gap-2">
+                  <Input placeholder="Email" />
+                  <Button>Subscribe</Button>
+                </form>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. In repudiandae sint voluptatibus.
+                </p>
+              </div>
             </div>
 
           </div>
