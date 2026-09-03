@@ -7,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return <LoginForm />
+  return (
+    <>
+      <LoginForm />
+      <div className="flex flex-col gap-2 text-muted-foreground text-sm mt-3">
+        <p className="m-0">Test email: <b>customer@example.com</b></p>
+        <p>Test password: <b>Password123!</b></p>
+      </div>
+    </>
+  )
 }
