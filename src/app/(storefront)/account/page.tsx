@@ -2,12 +2,22 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Package, Heart, ShieldCheck, Mail, User as UserIcon } from "lucide-react";
+import { Package, Heart, ShieldCheck, Mail, User as UserIcon, Clock } from "lucide-react";
 
 import { getSession } from "@/src/lib/api/auth";
+import { getUserOrders } from "@/src/lib/api/orders";
+import { formatCurrency } from "@/src/lib/helpers/format-currency";
 import { Avatar, AvatarFallback } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/src/components/ui/table";
 import {
   Card,
   CardContent,
@@ -34,6 +44,8 @@ export default async function AccountPage() {
   if (!user) {
     redirect("/login?callbackUrl=/account");
   }
+
+  const recentOrders = await getUserOrders(user.id);
 
   const initials = `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase() || "U";
 
@@ -168,6 +180,69 @@ export default async function AccountPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Recent Orders Section */}
+      <div className="mt-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Clock className="size-5 text-muted-foreground" />
+                Recent Orders
+              </CardTitle>
+              <CardDescription>
+                View your recent purchase history
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href="/account/orders" />}
+              nativeButton={false}
+            >
+              View All
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {recentOrders.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentOrders.slice(0, 5).map((order) => (
+                    <TableRow key={order.id}>
+                      <TableCell className="font-medium">
+                        <Link href={`/account/orders/${order.id}`} className="hover:underline">
+                          {order.id}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{new Date(order.date).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="capitalize">
+                          {order.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(order.total)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className="text-center py-6 text-muted-foreground text-sm">
+                You haven't placed any orders yet.
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
