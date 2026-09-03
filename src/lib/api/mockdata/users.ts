@@ -52,11 +52,13 @@ export function findUserByEmail(email: string): MockUserRecord | undefined {
   );
 }
 
+// MOCK ONLY — replace with bcrypt/argon2 hashing when a real backend lands.
 export function validateCredentials(
   email: string,
   password: string
 ): User | null {
   const user = findUserByEmail(email);
+  // MOCK ONLY — plaintext comparison; use a constant-time hash compare in production.
   if (!user || user.password !== password) {
     return null;
   }
@@ -99,6 +101,7 @@ export function registerUser(data: {
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
     email: data.email.trim().toLowerCase(),
+    // MOCK ONLY — store plaintext; hash with bcrypt/argon2 in production.
     password: data.password,
     role: "customer",
   };
