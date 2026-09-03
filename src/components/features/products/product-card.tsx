@@ -2,13 +2,14 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Eye, Heart } from "lucide-react"
+import { Eye, Heart, ShoppingBag } from "lucide-react"
 import { Card, CardContent } from "@/src/components/ui/card"
 import { Button } from "@/src/components/ui/button"
 
 import type { Product } from "@/src/types/product.types"
 import { formatCurrency } from "@/src/lib/helpers/format-currency"
 import { useState } from "react"
+import { useCartStore } from "@/src/hooks/use-cart-store"
 
 interface ProductCardProps {
   product: Product;
@@ -21,6 +22,21 @@ export default function ProductCard({ product, layout = "grid" }: ProductCardPro
     e.preventDefault();
     e.stopPropagation();
     // Add logic here (e.g. open quick view modal or add to wishlist)
+  };
+
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      base_price: product.base_price,
+      image: product.images[0]?.url || '',
+    });
   };
 
   return (
@@ -48,6 +64,15 @@ export default function ProductCard({ product, layout = "grid" }: ProductCardPro
               aria-label="Add to wishlist"
             >
               <Heart className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-9 w-9 rounded-full bg-background/80 backdrop-blur-sm shadow-sm hover:bg-background"
+              onClick={handleAddToCart}
+              aria-label="Add to cart"
+            >
+              <ShoppingBag className="h-4 w-4" />
             </Button>
             <Button
               variant="secondary"

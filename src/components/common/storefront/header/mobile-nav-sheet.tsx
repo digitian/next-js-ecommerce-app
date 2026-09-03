@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/src/components/ui/button";
 import {
   Sheet,
@@ -18,24 +19,31 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import { LocalizationSwitcher } from "./localization-switcher";
+import type { Category, SubCategory } from "@/src/types/product.types";
+import { useAuthStore } from "@/src/hooks/use-auth-store";
+import { logoutAction } from "@/src/lib/api/actions/auth-actions";
 
-const categories = [
-  {
-    title: "Furniture",
-    sub: ["Living Room", "Bedroom", "Dining Room", "Office", "Storage"],
-  },
-  {
-    title: "Home Decor",
-    sub: ["Rugs", "Lighting", "Mirrors", "Wall Art", "Cushions & Throws"],
-  },
-  {
-    title: "Kitchen & Dining",
-    sub: ["Cookware", "Tableware", "Drinkware", "Kitchen Storage"],
-  },
-];
+interface MobileNavSheetProps {
+  categories: Category[];
+  subcategories: SubCategory[];
+}
 
-export function MobileNavSheet() {
+export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProps) {
   const [open, setOpen] = useState(false);
+  
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const resetAuth = useAuthStore((state) => state.reset);
+
+  const handleLogout = async () => {
+    try {
+      resetAuth();
+      toast.success("Logged out successfully");
+      await logoutAction();
+      setOpen(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -52,40 +60,57 @@ export function MobileNavSheet() {
         
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
           <Accordion className="w-full">
-            {categories.map((cat, i) => (
-              <AccordionItem value={`item-${i}`} key={cat.title}>
-                <AccordionTrigger className="text-base font-medium py-4">
-                  {cat.title}
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col space-y-3 pl-2">
-                    <Link href="#" className="text-sm text-foreground font-medium py-1" onClick={() => setOpen(false)}>
-                      All {cat.title}
-                    </Link>
-                    {cat.sub.map((subItem) => (
-                      <Link href="#" key={subItem} className="text-sm text-muted-foreground py-1 hover:text-foreground" onClick={() => setOpen(false)}>
-                        {subItem}
+            {categories.map((cat, i) => {
+              const catSubs = subcategories.filter(s => s.category_id === cat.id);
+              return (
+                <AccordionItem value={`item-${i}`} key={cat.id}>
+                  <AccordionTrigger className="text-base font-medium py-4">
+                    {cat.title}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex flex-col space-y-3 pl-2">
+                      <Link href={`/products/${cat.slug}`} className="text-sm text-foreground font-medium py-1" onClick={() => setOpen(false)}>
+                        All {cat.title}
                       </Link>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                      {catSubs.map((subItem) => (
+                        <Link href={`/products/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground" onClick={() => setOpen(false)}>
+                          {subItem.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
 
           <div className="mt-8 space-y-4">
             <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Account & Settings</h3>
             <div className="flex flex-col space-y-3">
-              <Link href="#" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Sign In / Register</Link>
-              <Link href="#" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Order History</Link>
-              <Link href="#" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Wishlist</Link>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/account" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>My Account</Link>
+                  <Link href="/account/orders" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Order History</Link>
+                  <Link href="#" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Wishlist</Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-left text-sm py-2 text-foreground font-medium"
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Sign In</Link>
+                  <Link href="/register" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Register</Link>
+                </>
+              )}
             </div>
           </div>
         </div>
         
         <div className="p-4 border-t border-border bg-muted/20 flex flex-col gap-4">
            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Preferences</span>
               <LocalizationSwitcher />
            </div>
         </div>

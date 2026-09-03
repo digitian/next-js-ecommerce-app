@@ -88,7 +88,7 @@ export default async function AccountPage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-border p-3 flex items-center justify-between">
+            <div className="rounded-lg border border-border p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider block mb-1">
                   Email Address

@@ -6,17 +6,15 @@ import { SearchBar } from "./search-bar";
 import { CartTrigger } from "@/src/components/features/storefront/cart-trigger";
 import { ProfileDropdown } from "@/src/components/features/auth/profile-dropdown";
 import { Button } from "@/src/components/ui/button";
-import { MobileNavSheet } from "./mobile-nav-sheet";
 
-export function MiddleActionBar() {
+export function MiddleActionBar({ mobileNav }: { mobileNav?: React.ReactNode }) {
   return (
     <div className="w-full bg-background border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Mobile Menu & Logo */}
         <div className="flex items-center gap-4">
           <div className="lg:hidden">
-            {/* Mobile Nav Sheet will be placed here, just a placeholder for now */}
-            <MobileNavSheet />
+            {mobileNav}
           </div>
           
           <Link href="/">

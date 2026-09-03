@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { formatCurrency } from "@/src/lib/helpers/format-currency";
+import { useCartStore } from "@/src/hooks/use-cart-store";
 import type { Product } from "@/src/types/product.types";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
@@ -15,6 +16,7 @@ interface ProductInfoProps {
 
 export function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
+  const addItem = useCartStore((state) => state.addItem);
 
   const increment = () => setQuantity((prev) => prev + 1);
   const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -44,6 +46,17 @@ export function ProductInfo({ product }: ProductInfoProps) {
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
     }
+  };
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      base_price: product.base_price,
+      image: product.images[0]?.url || '',
+    }, quantity);
   };
 
   return (
@@ -97,7 +110,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </div>
 
         {/* Add to Cart */}
-        <Button size="lg" className="grow">
+        <Button size="lg" className="grow" onClick={handleAddToCart}>
           <ShoppingCart data-icon="inline-start" />
           Add to Cart
         </Button>

@@ -6,9 +6,10 @@ import { MiddleActionBar } from "./middle-action-bar";
 
 interface SiteHeaderProps {
   bottomNav: React.ReactNode;
+  mobileNav: React.ReactNode;
 }
 
-export function SiteHeader({ bottomNav }: SiteHeaderProps) {
+export function SiteHeader({ bottomNav, mobileNav }: SiteHeaderProps) {
   const [isScrolledDown, setIsScrolledDown] = useState(false);
   const [bottomNavHeight, setBottomNavHeight] = useState(0);
   const lastScrollY = useRef(0);
@@ -65,7 +66,7 @@ export function SiteHeader({ bottomNav }: SiteHeaderProps) {
         className="sticky w-full z-50 shadow-sm transition-[top] duration-300 ease-in-out"
         style={{ top: `${topOffset}px` }}
       >
-        <MiddleActionBar />
+        <MiddleActionBar mobileNav={mobileNav} />
         <div ref={bottomNavRef}>
           {bottomNav}
         </div>
