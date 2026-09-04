@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/src/components/ui/button";
@@ -30,6 +31,11 @@ interface MobileNavSheetProps {
 
 export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
   
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const resetAuth = useAuthStore((state) => state.reset);
@@ -69,11 +75,11 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col space-y-3 pl-2">
-                      <Link href={`/products/${cat.slug}`} className="text-sm text-foreground font-medium py-1" onClick={() => setOpen(false)}>
+                      <Link href={`/products/${cat.slug}`} className="text-sm text-foreground font-medium py-1">
                         All {cat.title}
                       </Link>
                       {catSubs.map((subItem) => (
-                        <Link href={`/products/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground" onClick={() => setOpen(false)}>
+                        <Link href={`/products/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground">
                           {subItem.title}
                         </Link>
                       ))}
@@ -89,9 +95,9 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
             <div className="flex flex-col space-y-3">
               {isAuthenticated ? (
                 <>
-                  <Link href="/account" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>My Account</Link>
-                  <Link href="/account/orders" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Order History</Link>
-                  <Link href="#" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Wishlist</Link>
+                  <Link href="/account" className="text-sm py-2 text-foreground font-medium">My Account</Link>
+                  <Link href="/account/orders" className="text-sm py-2 text-foreground font-medium">Order History</Link>
+                  <Link href="#" className="text-sm py-2 text-foreground font-medium">Wishlist</Link>
                   <button 
                     onClick={handleLogout}
                     className="text-left text-sm py-2 text-foreground font-medium"
@@ -101,8 +107,8 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Sign In</Link>
-                  <Link href="/register" className="text-sm py-2 text-foreground font-medium" onClick={() => setOpen(false)}>Register</Link>
+                  <Link href="/login" className="text-sm py-2 text-foreground font-medium">Sign In</Link>
+                  <Link href="/register" className="text-sm py-2 text-foreground font-medium">Register</Link>
                 </>
               )}
             </div>
