@@ -75,11 +75,11 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col space-y-3 pl-2">
-                      <Link href={`/products/${cat.slug}`} className="text-sm text-foreground font-medium py-1">
+                      <Link href={`/${cat.slug}`} className="text-sm text-foreground font-medium py-1">
                         All {cat.title}
                       </Link>
                       {catSubs.map((subItem) => (
-                        <Link href={`/products/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground">
+                        <Link href={`/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground">
                           {subItem.title}
                         </Link>
                       ))}
@@ -97,7 +97,7 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
                 <>
                   <Link href="/account" className="text-sm py-2 text-foreground font-medium">My Account</Link>
                   <Link href="/account/orders" className="text-sm py-2 text-foreground font-medium">Order History</Link>
-                  <Link href="#" className="text-sm py-2 text-foreground font-medium">Wishlist</Link>
+                  <Link href="/account/wishlist" className="text-sm py-2 text-foreground font-medium">Wishlist</Link>
                   <button 
                     onClick={handleLogout}
                     className="text-left text-sm py-2 text-foreground font-medium"
