@@ -71,7 +71,17 @@ export async function POST(request: NextRequest) {
 
   const wishlist = await addToWishlist(user.id, {
     id: parsed.data.id,
-    product: parsed.data.product,
+    // Store a lightweight snapshot (matching WishlistItemProductSnapshot),
+    // not the full validated product payload — same shape the client
+    // already builds in useWishlistStore's addItem/toggleItem calls.
+    product: {
+      id: parsed.data.product.id,
+      slug: parsed.data.product.slug,
+      name: parsed.data.product.name,
+      price: parsed.data.product.price,
+      base_price: parsed.data.product.base_price,
+      image: parsed.data.product.images[0]?.url ?? "",
+    },
     addedAt: new Date().toISOString(),
   });
 

@@ -53,6 +53,30 @@ Open [http://localhost:3000](http://localhost:3000).
 
 **Test account:** `customer@example.com` / `Password123!` (shown on the login page itself).
 
+## Testing
+
+```bash
+npm test              # unit + component + API route tests (Vitest)
+npm run test:watch    # same, in watch mode
+npm run test:e2e      # end-to-end flows (Playwright)
+```
+
+**Unit, component & API tests** (Vitest + React Testing Library, `*.test.ts`/`*.test.tsx` next to the code they cover) run against jsdom and don't need a running server — API route tests call the Next.js Route Handlers directly. They cover:
+
+- Pure helpers and Zod schemas (currency formatting, the checkout form schema).
+- The cart Zustand store (add/remove/update quantity, totals, checkout hand-off).
+- The mock auth layer (login, session create/destroy, registration).
+- Product card and cart item components (rendering, add-to-cart, wishlist toggle, quantity controls).
+- `GET/POST/DELETE /api/wishlist`, `GET /api/orders/[id]` (including a 403 regression test for the IDOR fix — a signed-in user can't fetch another user's order), and `POST /api/contact` (validation-before-Turnstile ordering, and that the raw captcha token is never persisted).
+
+**End-to-end tests** (Playwright, under `e2e/`) drive a real browser against a production build and cover the flows a reviewer is most likely to try by hand:
+
+- Guest browses the catalog, adds a product to the cart, and completes checkout through to the order confirmation page.
+- Logging in with the test account, viewing order history, and opening an order's detail page — plus the "can't view an order that isn't yours / doesn't exist" guard.
+- Sorting and filtering the product listing page.
+
+`npm run test:e2e` builds and starts the app itself (see `playwright.config.ts`), so no separate server needs to be running first.
+
 ## Known limitations
 
 This is a frontend showcase, not a production system — worth being upfront about:
