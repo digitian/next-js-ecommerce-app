@@ -19,11 +19,11 @@ export function MiddleActionBar({ mobileNav }: { mobileNav?: React.ReactNode }) 
           <Link href="/">
             {/* Minimalist Logo */}
             <Image
-              src="/images/logos/turkuaz-aski-logo.png"
+              src="/images/logos/marlow-brand-logo.png"
               alt="Logo"
               width={200}
               height={50}
-              className="object-contain brightness-80"
+              className="object-contain"
             />
           </Link>
         </div>

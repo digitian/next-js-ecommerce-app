@@ -59,11 +59,11 @@ export function SiteFooter({ categories }: SiteFooterProps) {
             <div className="flex flex-col gap-6">
               <Link href="/" className="inline-block">
                 <Image
-                  src="/images/logos/turkuaz-aski-logo.png"
+                  src="/images/logos/marlow-brand-logo.png"
                   alt="Turkuaz Aski Logo"
                   width={150}
                   height={40}
-                  className="object-contain"
+                  className="object-contain invert"
                 />
               </Link>
 

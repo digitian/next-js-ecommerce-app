@@ -12,11 +12,11 @@ export default function AuthLayout({
       <main className="w-full max-w-sm">
         <Link href="/">
           <Image
-            src="/images/logos/turkuaz-aski-logo.png"
+            src="/images/logos/marlow-brand-logo.png"
             alt="Logo"
             width={336}
             height={65}
-            className="mb-6 mx-auto max-w-60 brightness-80"
+            className="mb-6 mx-auto max-w-60"
           />
         </Link>
         {children}
