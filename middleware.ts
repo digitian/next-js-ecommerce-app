@@ -2,8 +2,16 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const { pathname, search } = request.nextUrl
+  const { pathname, search, searchParams } = request.nextUrl
   const hasSession = request.cookies.has('session')
+
+  if (searchParams.get('clearSession') === 'true') {
+    const url = new URL(request.url)
+    url.searchParams.delete('clearSession')
+    const response = NextResponse.redirect(url)
+    response.cookies.delete('session')
+    return response
+  }
 
   // 1. Protected routes: redirect unauthenticated users to login with callbackUrl
   const isProtectedRoute = pathname.startsWith('/account')

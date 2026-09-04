@@ -79,7 +79,7 @@ export function MobileNavSheet({ categories, subcategories }: MobileNavSheetProp
                         All {cat.title}
                       </Link>
                       {catSubs.map((subItem) => (
-                        <Link href={`/${cat.slug}/${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground">
+                        <Link href={`/${cat.slug}?subcategory=${subItem.slug}`} key={subItem.id} className="text-sm text-muted-foreground py-1 hover:text-foreground">
                           {subItem.title}
                         </Link>
                       ))}

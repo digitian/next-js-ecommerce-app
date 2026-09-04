@@ -34,7 +34,7 @@ export default async function OrdersPage() {
   const user = await getSession(token);
 
   if (!user) {
-    redirect("/login?callbackUrl=/account/orders");
+    redirect("/login?clearSession=true&callbackUrl=/account/orders");
   }
 
   const orders = await getUserOrders(user.id);
